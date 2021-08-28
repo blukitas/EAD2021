@@ -56,6 +56,54 @@ Programa desde la óptica de la estadística, y no desde una perspectiva computa
 Intersección de computacion, negocios y matemática.
 
 
+### Estadística
+
+* Teoría de las probabilidades
+* Formalizó el concepto de incertidumbre
+* Condicionada a datos escasos
+* Conceptos básicos:
+	* modelo probabilisticos
+	* población / muestra
+	* variable aleatoria
+	* inferencia
+	* significacia / p-valor
+	* test de hipótesis
+
+### Machine learning
+
+* Computación
+* Entrenamos algoritmos para que aprendan parámetros y reglas desde los datos
+
+
+## Taxonomía
+
+* Supervisada
+	* Clasificacion
+		* CART
+		* SVM
+	* Regresion
+		* Lineales
+		* Redes neuronales
+* No supervisada
+	* Análisis factorial
+		* PCA
+		* Correspondencia
+	* Segmentación
+		* K-means
+		* Cluster jerárquico
+		* GMM
+		
+### Tarea
+
+* Un sistema de recomendación es regresión? o clasificación?
+* Ejemplos de distintas taxonomías
+
+
+
+
+
+
+
 
 
 
