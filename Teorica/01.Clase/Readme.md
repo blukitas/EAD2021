@@ -6,12 +6,21 @@ Videos introductorios de la materia
 
 ## Motivación
 
-The unreasonable effectiveness of data
-
 Con los datos podemos entender? O necesitamos acceder al fenomeno subyacente
 
 **predecir vs explicar**
 por ejemplo: xgb (predecir) vs lineal generalizado (explicar)
+
+Hoy hay que estar en ambos mundos. Yo intento un modelo que prediga bien y que modele la influencia entre las variables. Hoy no es facil, y hay que estar en un mundo que prediga bien (Ensambles) y modelos que expliquen (Regresiones, arboles, lineales).
+
+Laburamos en un ciclo **describir-predecir-explicar**. EEA se para del lado explicar, DM EyF se para en el lado predecir.
+
+
+### Paper interesante y disparadores:
+
+* The unreasonable effectiveness of data -> https://static.googleusercontent.com/media/research.google.com/es//pubs/archive/35179.pdf 
+* Discusión Chomsky - Norvig
+
 
 ## Programa
 
@@ -100,6 +109,8 @@ Intersección de computacion, negocios y matemática.
 
 
 
+
+## Clase 28-08-2021
 
 
 
