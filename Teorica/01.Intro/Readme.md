@@ -71,6 +71,7 @@ Intersección de computacion, negocios y matemática.
 * Teoría de las probabilidades
 * Formalizó el concepto de incertidumbre
 * Condicionada a datos escasos
+	* Hoy con tantos datos hay un peligro, con suficiente datos cualquier cosa es determinante
 * Conceptos básicos:
 	* modelo probabilisticos
 	* población / muestra
@@ -78,11 +79,39 @@ Intersección de computacion, negocios y matemática.
 	* inferencia
 	* significacia / p-valor
 	* test de hipótesis
+	* Interpretabilidad
+		* Modelo de location
+			* Componente deterministico
+			* Componente aleatorio
+
 
 ### Machine learning
 
 * Computación
 * Entrenamos algoritmos para que aprendan parámetros y reglas desde los datos
+	* La idea es con algoritmos detectar las reglas que hacen al patrón desde los datos
+Otros keyword
+* Train/Test/Validation
+* Heurísticas
+
+**Big data**
+* Volumenes inmensos
+* Como almacenarlos
+* Como cambiamos los algoritmos para hacerlos eficientes y ejecutables
+
+**Data mining**
+* Que patrones pueden extraerse de los datos
+* Data analytics en gran escala
+* Versión antigua del Data Science
+
+**Optimización**
+* Fuerza bruta
+* Random-optimization
+* Gradient descent
+* Newton rapson
+* Simulating annealing
+* Expectation maximization
+* Algoritmos genéticos
 
 
 ## Taxonomía
