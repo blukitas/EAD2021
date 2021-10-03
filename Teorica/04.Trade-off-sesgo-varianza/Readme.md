@@ -26,4 +26,4 @@ Parsimonioso -> Inverso de complejo
 
 **Ref** -> Ppt y video 5.
 
-![Trade-off con ejemplo](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![Trade-off con ejemplo](https://github.com/blukitas/EEA-2021-Propio/blob/main/Teorica/04.Trade-off-sesgo-varianza/00.ejemplo.png?raw=true)
