@@ -127,10 +127,113 @@ Con muy pocos supuestos y con mucha robustez puedo llegar a conclusiones poderos
 
 # Inferencia sobre Y
 
+## Y | X = x_h
+
+E(Y | X = x_h) = beta_0 + beta_1 *  x_h (Sin sombrerito, porque estamos hablando del mundo ideal)
+
+La vamos a estimar con los estimadores que tenemos. El modelo está pensado para hallar la esperanza condicionada.
+
+Dos cosas que vemos muy claras en el modelo lineal (Minuto 7:40 del video - https://www.youtube.com/watch?v=CLxPrvFGodw&list=PLN2e9R_DoC0Qsp46a53RynWXjdl5240f8&index=25):
+    * La varianza se achica a velocidad raiz_cuadrada de n. Mayor n, menor varianza. (Para este modelo)
+    * Voy a poder estimar mejor los valores más cercanos al promedio
+        * Porque? Esto es algo sobre lo que volvimos varias veces
+        * Porque tengo más información. Más me alejo de la esperanza, de los valores promedios, que más aparecen. Menos información tengo. Menos información tuve para entrenar al modelo.
+
+Esto es generalizable. A todos los modelos tiende a pasarle esto.
+
+Estimo con un intervalo de confiaza (t de student), porque los estimadores tienen distribución t_student.
+
+## Y
+
+Y_h = beta_0 + beta_1 * X_h + error_h
+
+El predictor es el mismo:
+
+    beta_0 + beta_1 *  x_h
+
+Varianza => Suma 1 uno en el término.
+
+1 + 1/n + ( (x_h - X^2)/ Sum(X_i - X)²)
+
+La varianza son 3 términos: :
+* La estimación
+    * La linea directa. Estimación de Y | x_h
+* El intervalo de confianza asociado al n
+    * A mayor n => menor varianza
+* El intervalo de confianza asociado al error
+    * Tiende a 1, y se ve muy poco afectado
+    * El error irreductible
+    * El error propio del fenómeno
+        * Duda: Eso que no puedo reducir, es la falta de información, falta de elementos para capturar el fenómeno
+        * El equilibrio en este predecir/explicar es:
+            * Asumo que hay error e intento minimizarlo, buscando lo que explique la clase mayoritaria del fenómeno
+            * Asumo que hay mas que no entiendo de lo que si entiendo, e intento usar el método más complejo posible para capturar todos los fenómenos que pueda (Aunque no peuda explicarlo realmente)
+
+El problema con el mismo calculo de intervalo de confianza que para Y | x_h, es que ese intervalo tiene un 1-alpha de confianza para ese punto. Si quisiera calcularlo para n puntos, tendría n intervalors con 1-alpha. Si multiplico esa confianza, a mayor n, tiende a 0.
+
+Entonces que pasa? Necesitamos cambiar de distribución. 
+
+Banda de confianza para toda la recta. Infinitos intervalos posibles, para las infinitas y condicionadas. Intervalo de confianza para la recta. Intervalo de confianza simultaneo. Nivel simultaneo. (Todos nombres para lo mismo) 
 
 
+# Analisis de varianza
+
+Modelo de posicion -> El modelo más básico posible. Una constante. El modelo de base.
+
+Modelo de regresión lineal simple -> El que venimos viendo. Ordenada al origen + una variable
 
 
+Descomposición de suma de cuadrados
+
+SSTo (Suma de cuadrados totales) = SSRes (Suma de cuadrado de residuos) + SSReg (Suma de cuadrados de la regresión)
+
+Suma de Y_i - Y promedio = Suma de Y_i - Y sombrero + Suma de Y sombrero - Y promedio 
+
+Y_i = El valor en el punto
+Y promedio = Esperanza
+Y sombreo = Valor predicho
+
+Si mi modelo es muy bueno la suma de cuadrado de residuos tiene que ser chiquita.
+
+    SSReg / SSTO = Proporción de variabilidad explicada
+
+## Tabla ANOVA
+
+Fuente de variacion | Suma de cuadrados | Grados de libertad | Cuadrado medio | F               | p-valor
+--------------------|-------------------|--------------------|----------------|-----------------|-------------------
+Regresión           | SSReg             | 1                  | MSReg          | MSReg/ MSRes    | P(F_1,n-2 > F_obs)   
+(Continua)          |                   | Porque 1? A cada elemento le resto la suma de todos |||
+Residuos            | SSRes             | n - 2              | MSRes          |                 |    
+(Continua)          |                   | Porque n-2? n-p. Cada regresor (p), porque hubo p elementos para ajustar y que se parezcan |||
+Total               | SSTot             | n - 1              |                |                 | 
+(Continua)          |                   | Porque n-1? A cada elemento le resto la suma de todos |||
+
+Como se construye la variabilidad total?
+
+En un modelo lineal es más claro. Pero aplica a todos.
+ 
+Si mi modelo es muy bueno SSRes es muy muy cercano a cero
+Si mi modelo es malo SSRes es grande, eso significa que lo que explica mi beta_1 es muy cercano a 0. (?)  
+ 
+
+F = MSReg / MSRes
+
+Si son anómalamente grande significa que mi beta_1 no aporta. 
+F anómalamente chico significa que no aporta información. Ese beta es poco significativo.
+
+
+## Coeficiente de determinación
+
+100% de la variabilidad -> SSTot
+Cuanto de la variabilidad explicada -> SSTot - SSRes
+% de la variabilidad explicada -> (SSTot - SSRes) / SSTot * 100
+
+**Coeficiente de determinación** - r^2 => (SSTot - SSres) / SSTot
+
+* Siempre entre 0 y 1
+* Es el cuadrado del coeficiente de correlación de Pearson
+
+Esto se ve en la salida del modelo. Anlisis de "Multiple R square", "Adjusted R Square", F, p-value,
 
 # Notas de clases
 
@@ -144,6 +247,13 @@ Un poco de lo que fue pasando en clase
 * En el modelo cada punto es una variable aleatoria, se distribuye como normal alrededor de ese punto
 
 
+# Leverage
+
+El valor predicho de un dato puede escribirse como combinacion lineal de las observaciones. 
+
+h_ij = Hat matrix. Es una constante que depende de la cantidad de datos.
+
+* Tremendamente importante. Segunda parte del análisis del modelo lineal.
 
 ### Observaciones
 
