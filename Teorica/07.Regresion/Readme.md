@@ -235,6 +235,92 @@ Cuanto de la variabilidad explicada -> SSTot - SSRes
 
 Esto se ve en la salida del modelo. Anlisis de "Multiple R square", "Adjusted R Square", F, p-value,
 
+
+# Leverage 
+
+(Palancas en castellano)
+
+El valor predicho de un dato puede escribirse como combinacion lineal de las observaciones (Esto es una afirmación). Busco entender como las distintas observaciones afectan a la observación i-esima
+
+* Ella consigo misma (h_ii)
+    * h_{ik} = 1/n + ( (X_i - \overline{X})^2 ) / S_{xx}
+    * Cuan lejos está la observación de la media, medida en término de la dispersión de todos los valores 
+    * (Se simplifica el cálculo, lo cuál ayuda a entender el sentido)
+* Las otras n-1 observaciones (los h_ik)
+    * h_{ik} = 1/n + ( (X_i - \overline{X}) * (X_k - \overline{X}) ) / S_{xx}
+    * Cuan lejos está la observación de la media, medida en término de la dispersión de todos los valores
+
+
+Se habla de h_ij. H por _Hat matrix_. Es una constante que depende de la cantidad de datos.
+
+
+* Se ve afectada por el tamaño de la muestra. Menos tamaño de muestra más pesa n (1/2 > 1/10.000) 
+* S_xx = Sumatoria de las distancias de los X_k a la media
+* Los valores más cercanos a la media mueven poco la ecuación. Los valores más alejados tienen más leverage. Esto es consistente con lo que veníamos diciendo antes, tenemos siempre más información de los valores promedios que de los valores alejados. 
+    * Un valor alejado tiene mayor leverage, y tiene mucho mayor influencia sobre el modelo en ese punto. Porque? Porque tenemos pocas observaciones => tenemos poca información para predecir, las pocas observaciones van a tener mucho más peso.
+
+
+(Video 2 de leverage, minuto 6:30 - hasta el final)
+* En una única dimensión parece más trivial, pero es muy importante. **Tremendamente importante**. Segunda parte del análisis del modelo lineal.
+* Es un producto interno.
+* Mide la asociación entre los atributos de las observaciones.
+* "comparar la información en común entre observaciones"
+
+Si hay observaciones con mucho leverage, es probable que necesitemos un método robusto. Porque esas observaciones podrían haber arrastrado al modelo (Cuando lo arrastra, no predice bien esos valores y sesga los otros).
+
+# Residuos
+
+Residuo del modelo = Diferencia entre valor observado y el valor predicho. 
+
+Es la mejor aproximación que podemos hacer del error (Valor aleatorio que no podemos observar).
+
+La esperanza de los errores es 0. Cuando n tiende a infinito, el error tiende a 0, la estimación de la media muestral tiende a la media de la poblacional.
+
+La _varianza_? La varianza de los residuos no es homogenea (Aunque haya homocedasticidad). Mayor leverage => menor varianza. Si una observación tiene mucha influencia (leverage), tiende a arrastrar con mayor fuerza a esa variable. (Todo esto es una derivación de que siempre tenemos más información alrededor de la media, y el modelo optimiza eso). 
+
+Si el n es muy grande, el efecto del leverage disminuye. 1/n tiende a 0. S_xx tiende a un numero fijo. La afectación de cada observación contra la media tiende a achicarse. (Los leverage tienen una cota [1/n; 1])
+
+La **varianza de los errores** es: varianza_muestral * (1 - h_ii)
+
+
+## Estructura de los residuos
+
+**homocedasticidad**: En estadística se dice que un modelo predictivo presenta homocedasticidad cuando la varianza del error condicional a las variables explicativas es constante a lo largo de las observaciones.​Un modelo estadístico relaciona el valor de una variable a predecir con el de otras. (Wikipedia)
+
+Deberíamos chequear como son los residuos. Aunque el hecho de que no se cumplan normalidad, independencia, homocedasticidad, no implica que no podamos modelar y confiar en el modelo. En muchos casos el modelo funciona, funciona bien y es consistente. Lo que tenemos que tener más cuidado es con los p-valores, en el valor F (Por lo menos fielmente).
+
+Como hacerlo más robusta?
+
+Varianza de residuos estandarizados. Correción por leverage de las observaciones.
+
+## Heterocedasticidad
+
+En heterocedasticidad los estimadores se vuelven menos eficientes. La varianza del error no se distribuye igual en todas las observaciones. Hay partes del modelo donde logramos peores predicciones.
+
+Mejoras:
+
+* Agregar pesos (Weighted least square - minimos cuadrados pesados)
+    * Agregar peso a las observaciones con menor residuo.
+
+## Análisis de outliers
+
+Outliers -> (Continuacion de todo lo que veníamos hablando. El modelo ajusta peor.)
+
+Como detectar? En muchas dimensiones y en datasets grades no es trivial.
+- Leave one out cross validation
+    - Hago iteraciones para todos los datos, y en cada iteración saco una.
+    - Predigo en cada observacion esa que está afuera. 
+    - Si esa observacion fuera outlier, la prediccion de ese punto, con un modelo entrenado sin ese punto, va a ser muy muy mala (La distancia va a ser grande).
+- Usar metodos robustos (Lo vemos con regularizacion)
+
+## Observaciones influyentes
+
+Alta palanca y outlier. Hay 4 casos: 
+
+<img src="./img/2021-11-14_0_observaciones_influyentes.png" alt="drawing" width="700px" align="middle"/>
+
+
+
 # Notas de clases
 
 Un poco de lo que fue pasando en clase 
@@ -246,14 +332,6 @@ Un poco de lo que fue pasando en clase
 
 * En el modelo cada punto es una variable aleatoria, se distribuye como normal alrededor de ese punto
 
-
-# Leverage
-
-El valor predicho de un dato puede escribirse como combinacion lineal de las observaciones. 
-
-h_ij = Hat matrix. Es una constante que depende de la cantidad de datos.
-
-* Tremendamente importante. Segunda parte del análisis del modelo lineal.
 
 ### Observaciones
 
