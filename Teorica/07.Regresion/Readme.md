@@ -315,9 +315,207 @@ Como detectar? En muchas dimensiones y en datasets grades no es trivial.
 
 ## Observaciones influyentes
 
-Alta palanca y outlier. Hay 4 casos: 
+Hay 4 casos: 
 
-<img src="./img/2021-11-14_0_observaciones_influyentes.png" alt="drawing" width="700px" align="middle"/>
+<img src="https://raw.githubusercontent.com/blukitas/EEA-2021-Propio/main/Teorica/07.Regresion/2021-11-14_0_observaciones_influyentes.png" alt="drawing" width="700px" align="middle"/>
+
+1. Recta ajustada, observaciones piolas, sin alto leverage, sin outliers.
+2. Puntos sin alto leverage, pero es outlier
+3. Punto con alto leverage, pero no es outlier
+4. Observacion con alto leverage (palanca) y outlier
+    * Este es el caso más grave y el que buscamos evitar. 
+    * Modifica el ajuste del modelo y empeor las predicciones generales.
+    * **punto influyente**
+
+La forma en la práctica de detectar puntos influyentes es la _distancia de cook_. La puedo calcular con los residuos estandarizados y h_ii.
+
+    D_i = !/2 (rest_i)^2 * ( h_{ii} / (1 - h_{ii}) )
+
+## Estimador de minimos cuadrados
+
+Por Gauss. Es muy viejo.
+
+Ordinary least square => OLS
+
+Es el mejor estimador lineal insesgado que uno puede tener. Minimizar varianza. 
+
+Los supuestos que le pedimos:
+
+* Esperanza de los errores => 0
+* Varianza constante, finita, homocedastica
+* Distintos errores no esten correlacionados
+
+(Siempre apuntandole a insesgadez)
+
+
+# Modelado estadístico múltiple
+
+## Utilidad
+
+* Cuantificar incertidumbre de las estimaciones
+* Completar la falta de información con "relaciones" matemáticas razonables/justificadas
+* Modelar correctamente los fenómenos de interes, discriminando las relaciones "concomitantes" de aquellas que son "esenciales".
+
+**Conceptos útiles**
+* Independencia condicionada
+    * P (A intersect B | C ) = P( A | C ) * P( B | C )
+    * Dos variables que parecen correlacionadas, son independiente cuando las condiciono con una tercera
+    * Ejemplo video 3 - modelado múltiple (https://www.youtube.com/watch?v=Q0LN6CC5yK4&list=PLN2e9R_DoC0Qsp46a53RynWXjdl5240f8&index=48)
+    * El precio de las propiedades parece ser más alto cuándo vende la inmobiliaria, que si es 'dueño vende'. Cuando la condiciono al precio, me doy cuenta que la relacion no es inmobiliaria_vende con precio, sino metro_cuadrado con precio. _Pero_ que las casas que la inmobiliaria vende tienden a ser mayores en tamaño (Parecen correlacionar pero no es)
+
+La estadística ayuda a modelar correctamente los fenómenos, a que sea más coherente con la realidad. Capturar los fenómenos subyacentes.
+
+
+# Inferencia modelo lineal múltiple
+
+Es un modelo para la variable aleadotia Y con X_{1} .. X_{p-1} variables regresoras.
+
+$Y_i = \beta_0 + \beta_1 * X_{i1} + \beta_2 * X_{i2} + ... + \beta_{p-1} * X_{i*p-1} + error_i$
+
+Se infieren parámetros (betas). El error es una Normal(0, ð²). 
+
+Los supuestos fuertes:
+* Errores distribuyen como normal, son homocedasticos.
+* Errores independientes.
+* En la práctica no taaaan fuertes, si no se cumples no invalidan el modelo.
+
+
+Definiciones:
+* Regresión polinómica: Regresión donde tengo una variable con muchas transformaciones.
+* Weierstrass approximation theorem -> Para cualquier epsilon (error) que propongamos, existe un polinomio p, tal que para todos los x en el intervalo [a,b] tenemos una función que la aproxima con un error < a epsilon. 
+    * Los polinomios son densos en las funciones continuas en un compacto 
+    * Si yo tengo un x, puedo aproximar un y como una suma de las potencias de x
+
+A que vamos? A que las regresiones son muy poderosas. No es una herramienta simple. Nos da mucha capacidad de entendimiento.
+
+* Y está **condicionada linealmente** a cada X (Por más compleja que sea la función que construye X)
+    * La linealidad colabora con la sencillez y la explicabilidad
+    * X*beta es la contribución marginal que tiene X sobre la explicación de Y 
+* **Aditividad** también -> Se suman los efectos de cada X para explicar Y
+    * Es muy importante y muy restrictiva
+    * El aporte de X_2 no tiene nada que ver con el valor que aporta X_1
+    * Hay interacción entre X_1 y X_2 cuando lo que explica X_1 depende de los niveles de X_2. Es una relación en como explican.
+    * Es diferente de la dependencia/independencia entre covariables (Colianelidad - relacion entre covariables), con la interacción entre variables. 
+
+
+## Notación matricial
+
+Es una forma de describir. Es el modo más natural de describir algunos conceptos. Además el álgebra lineal/matricial es el lenguaje natural de esto.
+
+Vector_Y = Vector_X * Vector_beta + Vector_epsilon
+  (n.1)  =   (n.p)  *    (n.1)    +     (n.1)
+
+Puedo pensar el vector:
+
+* E(Y | X) = X * betas
+* Var(Y | X) = Matriz_sigma^2 * vector_identidad
+    * La matrix varianza, es una matriz que tiene las varianzas en la diagonal y el resto son ceros
+
+## Estimación de parámetros
+
+$X^t X \hat{\beta} = X^t Y$
+$\hat{\beta} = (X^t X)^-| X^t Y$
+
+Para hallar los betas, la matriz tiene que se inversibles. Lo cuál implica que no hay variables que compartan información. Eso es colinealidad y tiende a ser más y más frecuente en la medida que sumo variables.
+
+"Proyectar el vector y en la matriz de los p atributos" (Video 8, hay que reverlo)
+
+r = Coeficiente de ?
+r^2 = Variabilidad explicada
+r^2 ajustado = Para ajustarlo por las dimensiones  
+
+Más dimensiones más nos acercamos. Buscamos minimizar la distancia euclidea. Cuando sumamos dimensiones, le damos más distancia para explorar distancias menores. 
+
+Video 11 -> coeficiente f y r-ajustado
+
+
+## Multicolanealidad
+
+Video 12
+
+Aumenta varianza => aumenta imprecisión
+
+VIF_j = C_j = 1 / (1-R_j^2)
+
+VIF = Variance inflation factor. La regularización me ayuda a controlar esto. También componentes principales.
+
+R_j es cuanta varianza explica una variable en relación a las otras X. Si correlación con alguna, aumenta la varianza en ese columna.
+
+
+## Iteracción entre variables
+
+X1 y X2 interactuan. Puedo adicionar variables 
+
+En r:
+
+* ajuste <- lm (Y ~ x_1 + x_2)
+    * Aditivo
+* ajuste <- lm (Y ~ x_1 * x_2)
+    * beta_0 + beta_1 * x_1 + beta_2 * X_2 + beta_1_2 * X_1 * X_2
+    * Da errado => Interaccion muy fuerte => Infla la varianza
+    * El estadístico F disminuye, pero p_significativo puede dar significativo
+
+(Videos 17-20)
+
+## Selección de modelos
+
+2^k modelos, con k covariables. Puedo generar muchísimos modelos posibles. 
+
+* R^2 => No es un buen selector, pero me habla de la variabilidad explicada.
+* R^2_ajustado => Es un mejor predictor
+    * A > p => Se controla
+* C_'de Mallones
+* AIC 
+* Criterio bayesiano de Schwartz
+
+Estos últimos 3 penalizan por p (Cantidad de parámetros).
+
+
+### Metodologías automáticas
+
+1. Probar todos los subconjutos posibles
+2. Eliminación backward
+3. Selección forward
+    * Incorporando variables
+4. Stepwise regression
+    * Regresión de a pasos
+
+2,3,4 son greedy. Buscan optimizar la búsqueda del modelo.
+
+
+Enfoques alternativos:
+
+* Multimodel inference -> Dudoso, no tiene tanto respaldo
+* Bayesian model averaging -> Dificil de implementar
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -339,3 +537,11 @@ Es muy distintos:
 
 * Explicar la esperanza de Y condicionada en X. E(Y | X)
 * Predecir Y
+
+
+Matriz de proyeccion -> Toma un vector y lo proyecta sobre el espacio generado de la prediccion
+
+
+Caer en la trampa dummy
+- Si hago one hot encoding, para una variable categórica con k valores diferentes, voy crear k-1 nuevas variables.
+- Porq? Porque si creo k variables, voy a tener colinealidad, no va a ser inversible (Entender mejor esto último)
